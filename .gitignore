@@ -72,3 +72,8 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+/Spa_verse/Library
+/Spa_verse/Logs
+/Spa_verse/Temp
+/Spa_verse/UserSettings
+Spa_verse/.vsconfig
