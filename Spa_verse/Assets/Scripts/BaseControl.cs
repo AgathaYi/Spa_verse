@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class BaseControl : MonoBehaviour // 생명체들의 부모
 {
@@ -8,47 +9,84 @@ public class BaseControl : MonoBehaviour // 생명체들의 부모
     // Rigidbody2D, Collider2D, Animator, SpriteRenderer, AudioSource, Transform, GameObject
     // private : 소문자시작.
 
-    protected Rigidbody2D Rigidbody; // 스크립트에서 사용 가능해지도록 protected로 설정, 외부에서 직접 접근 불가(캡슐화)
+    protected Rigidbody2D Rigidbody;
 
-    // 캐릭터 플립
     [SerializeField] private SpriteRenderer CharacterFlip;
 
-    // Move / 이동방향, 플레이어 - wasd, 적 - 자동랜덤
     protected Vector2 moveDirection = Vector2.zero;
-    public Vector2 MoveDirection { get => moveDirection; } // 외부 접근 경로
+    public Vector2 MoveDirection { get => moveDirection; }
+
+    // 바라보는 방향
+    protected Vector2 lookDirection = Vector2.zero;
+    public Vector2 LookDirection { get => lookDirection; }
+
+    protected StatHandler StatHandler;
 
 
-
-    void Awake() // 오브젝트 첫 생성시 한번 호출, 안전한 초기화 단계
+    protected virtual void Awake()
     {
-        Rigidbody = GetComponent<Rigidbody2D>(); // Rigidbody2D 컴포넌트 가져오기
+        Rigidbody = GetComponent<Rigidbody2D>();
+        StatHandler = GetComponent<StatHandler>();
     }
 
-    void Start() // 시작시 한번 호출, Awake() 다음에 호출
+    void Start()
     {
         
     }
 
-    void Update() // 매 프레임마다 호출, 물리 X, 일반 
+    protected virtual void Update() // 매 프레임마다 호출, 물리 X, 일반 
     {
-        // 플레이어 이동 - > playerControl 자식에서.. 업데이트가 오버라이드가 안됨.음..
         KeyControl();
+        Rotate(lookDirection);
     }
 
-    protected virtual void KeyControl()
-    {
-        // 적은 X.. 플레이어만  / 버츄얼해야 자식에서 오버라이드 가능
-    }
 
     protected virtual void FixedUpdate() // 물리적 업데이트, 매 프레임마다 호출
     {
         Move(moveDirection);
     }
 
+    protected virtual void KeyControl()
+    {
+        // 자식에서 오버라이드
+    }
+
     // 이동 속도, 실제 이동
     private void Move(Vector2 direction)
     {
-        direction = direction * 7;
+        direction = direction * StatHandler.MoveSpeed;
         Rigidbody.velocity = direction;
     }
+
+    private void Rotate(Vector2 direction)
+    {
+        if (direction.x > 0)
+        {
+            CharacterFlip.flipX = false;
+        }
+        else if (direction.x < 0)
+        {
+            CharacterFlip.flipX = true;
+        }
+    }
+
+    public virtual void Die()
+    {
+        Rigidbody.velocity = Vector2.zero;
+
+        foreach (SpriteRenderer sprite in transform.GetComponentsInChildren<SpriteRenderer>())
+        {
+            Color color = sprite.color;
+            color.a = 0.3f;
+            sprite.color = color;
+        }
+
+        foreach (Behaviour component in transform.GetComponentsInChildren<Behaviour>())
+        {
+            component.enabled = false;
+        }
+
+        Destroy(gameObject, 2f);
+    }
+
 }
