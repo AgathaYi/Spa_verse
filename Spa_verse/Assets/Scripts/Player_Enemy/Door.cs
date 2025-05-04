@@ -62,13 +62,6 @@ public class Door : MonoBehaviour
         {
             isplayerInRange = true;
             Debug.Log("문근처");
-
-            // 문열기 키
-            //if (Input.GetKeyDown(KeyCode.F))
-            //{
-            //    Debug.Log("문열림");
-            //    DoorCheck();
-            //}
         }
     }
 
