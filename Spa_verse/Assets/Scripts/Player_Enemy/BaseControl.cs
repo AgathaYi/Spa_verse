@@ -16,7 +16,6 @@ public class BaseControl : MonoBehaviour // 생명체들의 부모
     protected Vector2 moveDirection = Vector2.zero;
     public Vector2 MoveDirection { get => moveDirection; }
 
-    //[SerializeField] protected float jumpPower = 5f;
     protected bool isRunning = false; // 달리기 여부
 
     // 바라보는 방향

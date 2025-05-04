@@ -19,17 +19,14 @@ public class PlayerControl : BaseControl
 
     protected override void KeyControl()
     {
+        // WASD, 방향키 입력
         float horizontal = Input.GetAxisRaw("Horizontal"); // 가로
         float vertical = Input.GetAxisRaw("Vertical"); // 세로
         moveDirection = new Vector2(horizontal, vertical).normalized;
 
         isRunning = Input.GetKey(KeyCode.LeftShift);
 
-        //if (Input.GetKeyDown(KeyCode.Space) && Mathf.Abs(Rigidbody.velocity.y) < 0.02f)
-        //{
-        //    Rigidbody.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-        //}
-
+        // 바라보는 방향
         Vector2 mousePos = Input.mousePosition;
         Vector2 worldPos = mainCamera.ScreenToWorldPoint(mousePos);
         lookDirection = worldPos - (Vector2)transform.position;

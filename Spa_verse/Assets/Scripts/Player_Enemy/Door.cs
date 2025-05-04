@@ -5,7 +5,7 @@ using UnityEngine;
 public class Door : MonoBehaviour
 {
     // 문 오브젝트
-    public GameObject closedDoor;
+    public GameObject closeDoor;
     public GameObject openDoor;
 
     // collider
@@ -16,12 +16,15 @@ public class Door : MonoBehaviour
 
     void Start()
     {
-        
+        doorCollider = GetComponent<BoxCollider2D>();
+        ChangeDoorUI();
     }
 
+    // 문여닫기 확인
     public void DoorCheck()
     {
         isOpen = !isOpen;
+        doorCollider.enabled = !doorCollider.enabled; // 문이 열리면 충돌체 비활성화
         ChangeDoorUI();
     }
 
@@ -29,12 +32,12 @@ public class Door : MonoBehaviour
     {
         if (isOpen)
         {
-            closedDoor.SetActive(false);
+            closeDoor.SetActive(false);
             openDoor.SetActive(true);
         }
         else
         {
-            closedDoor.SetActive(true);
+            closeDoor.SetActive(true);
             openDoor.SetActive(false);
         }
     }
@@ -46,7 +49,7 @@ public class Door : MonoBehaviour
         {
             Debug.Log("문근처");
             // 문을 열기 키
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 Debug.Log("문열림");
                 DoorCheck();
