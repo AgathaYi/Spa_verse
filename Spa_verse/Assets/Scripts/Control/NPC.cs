@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NPC : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class NPC : MonoBehaviour
     [SerializeField] private SpriteRenderer npcSprite;
     [SerializeField] private BoxCollider2D npcCollider;
     [SerializeField] private GameObject npcSpeech;
-    [SerializeField] private Animator speechAnimator;
+    [SerializeField] private Animator popUpAnimator;
 
     private bool redZoneOpen = false;
 
@@ -20,26 +21,23 @@ public class NPC : MonoBehaviour
         set { redZoneOpen = value; }
     }
 
-    void Start()
+    void Start() // 시작시
     {
         if (npcSpeech != null)
         {
-            speechAnimator = npcSpeech.GetComponent<Animator>();
-            npcSpeech.SetActive(false);
+            popUpAnimator = npcSpeech.GetComponent<Animator>();
+            npcSpeech.SetActive(true);
+            popUpAnimator.Rebind();
+            popUpAnimator.Update(0);
         }
 
         npcSprite = transform.Find("MainSprite").GetComponent<SpriteRenderer>();
         npcSprite.color = new Color(1, 1, 1, 0); // 투명
 
         npcCollider = GetComponent<BoxCollider2D>();
-
-        if (RedZoneBtn != null)
-        {
-            RedZoneBtn.SetActive(false); // 레드존 버튼 비활성화
-        }
     }
 
-    void Update()
+    void Update() // 매프레임
     {
         // 레드존 오픈 여부 확인
         if (!redZoneOpen)
@@ -47,9 +45,9 @@ public class NPC : MonoBehaviour
             redZoneOpen = true;
             npcSprite.color = new Color(1, 1, 1, 1); // 불투명
             npcCollider.enabled = true; // NPC 충돌체 활성화
-            if (speechAnimator != null)
+            if (popUpAnimator != null)
             {
-                speechAnimator.enabled = true;
+                popUpAnimator.enabled = true;
             }
         }
     }
@@ -62,9 +60,10 @@ public class NPC : MonoBehaviour
             if (npcSpeech != null)
             {
                 npcSpeech.SetActive(true);
-                if (speechAnimator != null)
+
+                if (popUpAnimator != null)
                 {
-                    speechAnimator.Play("Talk", 0, 0);
+                    popUpAnimator.SetBool("IsPopDown", false);
                 }
             }
         }
@@ -73,17 +72,17 @@ public class NPC : MonoBehaviour
     //충돌영역이탈
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.CompareTag("Player"))
+        if (redZoneOpen && collider.CompareTag("Player"))
         {
-            if (npcSpeech != null && npcSpeech.activeSelf && speechAnimator != null)
+            if (npcSpeech != null && npcSpeech.activeSelf && popUpAnimator != null)
             {
-                speechAnimator.Play("TalkClean", 0, 0);
+                popUpAnimator.SetBool("IsPopDown", true);
             }
         }
         
     }
 
-    public void OnTalkClean()
+    public void OnPopDown()
     {
         if (npcSpeech != null)
         {
