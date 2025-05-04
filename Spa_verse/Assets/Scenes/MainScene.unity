@@ -17048,7 +17048,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1568771371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17061,6 +17061,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44b131c54f2ea5448b217de69009811a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  redDoor: {fileID: 595955764}
   npcSprite: {fileID: 938494841}
   npcCollider: {fileID: 1568771372}
   npcSpeech: {fileID: 392137340}

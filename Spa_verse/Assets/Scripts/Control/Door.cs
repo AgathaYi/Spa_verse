@@ -13,6 +13,8 @@ public class Door : MonoBehaviour
 
     // ¿ÀÇÂ ¿©ºÎ
     private bool isOpen = false;
+    public bool IsOpenDoor { get => isOpen; }
+
     private bool isplayerInRange = false;
 
 

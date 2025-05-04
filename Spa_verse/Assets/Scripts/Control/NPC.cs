@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class NPC : MonoBehaviour
 {
+    [SerializeField] private Door redDoor;
+
     //NPC
     [SerializeField] private SpriteRenderer npcSprite;
     [SerializeField] private BoxCollider2D npcCollider;
@@ -15,20 +17,17 @@ public class NPC : MonoBehaviour
 
     public GameObject RedZoneBtn;
 
-    public bool RedZoneOpen
-    {
-        get { return redZoneOpen; }
-        set { redZoneOpen = value; }
-    }
 
     void Start() // 시작시
     {
         if (npcSpeech != null)
         {
             popUpAnimator = npcSpeech.GetComponent<Animator>();
-            npcSpeech.SetActive(true);
+            npcSpeech.SetActive(true); // Animator
             popUpAnimator.Rebind();
             popUpAnimator.Update(0);
+
+            npcSpeech.SetActive(false);
         }
 
         npcSprite = transform.Find("MainSprite").GetComponent<SpriteRenderer>();
@@ -40,11 +39,12 @@ public class NPC : MonoBehaviour
     void Update() // 매프레임
     {
         // 레드존 오픈 여부 확인
-        if (!redZoneOpen)
+        if (!redZoneOpen && redDoor != null && redDoor.IsOpenDoor)
         {
             redZoneOpen = true;
             npcSprite.color = new Color(1, 1, 1, 1); // 불투명
             npcCollider.enabled = true; // NPC 충돌체 활성화
+
             if (popUpAnimator != null)
             {
                 popUpAnimator.enabled = true;
