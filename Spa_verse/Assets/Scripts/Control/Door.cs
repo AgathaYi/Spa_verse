@@ -15,6 +15,7 @@ public class Door : MonoBehaviour
     private bool isOpen = false;
     private bool isplayerInRange = false;
 
+
     void Start()
     {
         doorCollider = GetComponent<BoxCollider2D>();
