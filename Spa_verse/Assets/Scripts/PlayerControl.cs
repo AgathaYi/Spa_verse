@@ -6,6 +6,12 @@ public class PlayerControl : BaseControl
 {
     private Camera mainCamera;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        mainCamera = Camera.main;
+    }
+
     public void Init()
     {
         mainCamera = Camera.main;
