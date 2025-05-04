@@ -13,11 +13,24 @@ public class Door : MonoBehaviour
 
     // 오픈 여부
     private bool isOpen = false;
+    private bool isplayerInRange = false;
 
     void Start()
     {
         doorCollider = GetComponent<BoxCollider2D>();
         ChangeDoorUI();
+    }
+
+    void Update()
+    {
+        if (isplayerInRange && Input.GetKeyDown(KeyCode.F))
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                Debug.Log("문열림");
+                DoorCheck();
+            }
+        }
     }
 
     // 문여닫기 확인
@@ -43,17 +56,28 @@ public class Door : MonoBehaviour
     }
 
     // 플레이어가 문에 접근
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
+            isplayerInRange = true;
             Debug.Log("문근처");
-            // 문을 열기 키
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                Debug.Log("문열림");
-                DoorCheck();
-            }
+
+            // 문열기 키
+            //if (Input.GetKeyDown(KeyCode.F))
+            //{
+            //    Debug.Log("문열림");
+            //    DoorCheck();
+            //}
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            isplayerInRange = false;
+            Debug.Log("문밖");
         }
     }
 }
