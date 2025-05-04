@@ -23,6 +23,13 @@ public class PlayerControl : BaseControl
         float vertical = Input.GetAxisRaw("Vertical"); // ¼¼·Î
         moveDirection = new Vector2(horizontal, vertical).normalized;
 
+        isRunning = Input.GetKey(KeyCode.LeftShift);
+
+        //if (Input.GetKeyDown(KeyCode.Space) && Mathf.Abs(Rigidbody.velocity.y) < 0.02f)
+        //{
+        //    Rigidbody.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+        //}
+
         Vector2 mousePos = Input.mousePosition;
         Vector2 worldPos = mainCamera.ScreenToWorldPoint(mousePos);
         lookDirection = worldPos - (Vector2)transform.position;

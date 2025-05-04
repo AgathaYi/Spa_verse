@@ -16,6 +16,9 @@ public class BaseControl : MonoBehaviour // 생명체들의 부모
     protected Vector2 moveDirection = Vector2.zero;
     public Vector2 MoveDirection { get => moveDirection; }
 
+    //[SerializeField] protected float jumpPower = 5f;
+    protected bool isRunning = false; // 달리기 여부
+
     // 바라보는 방향
     protected Vector2 lookDirection = Vector2.zero;
     public Vector2 LookDirection { get => lookDirection; }
@@ -54,7 +57,14 @@ public class BaseControl : MonoBehaviour // 생명체들의 부모
     // 이동 속도, 실제 이동
     private void Move(Vector2 direction)
     {
-        direction = direction * StatHandler.MoveSpeed;
+        float runSpeed = StatHandler.MoveSpeed;
+
+        if (isRunning)
+        {
+            runSpeed *= 1.8f;
+        }
+
+        direction = direction * runSpeed;
         Rigidbody.velocity = direction;
     }
 
