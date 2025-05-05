@@ -33,7 +33,15 @@ public class BluePlayer : MonoBehaviour
     {
         if (isDead)
         {
-
+            if (deathCooldown > 0)
+            {
+                deathCooldown -= Time.deltaTime;
+            }
+            else
+            {
+                isDead = false;
+                deathCooldown = 0.5f;
+            }
         }
         else
         {
@@ -48,7 +56,16 @@ public class BluePlayer : MonoBehaviour
     {
         if (isDead)
         {
-            return;
+            if (deathCooldown > 0)
+            {
+                deathCooldown -= Time.deltaTime;
+            }
+            else
+            {
+                animator.SetTrigger("Die");
+                isDead = false;
+                deathCooldown = 0.5f;
+            }
         }
 
         Vector3 velocity = blueRigidbody.velocity;
@@ -61,5 +78,21 @@ public class BluePlayer : MonoBehaviour
         }
 
         blueRigidbody.velocity = velocity;
+
+        float angle = Mathf.Clamp(blueRigidbody.velocity.y * 5f, -90, 90);
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        isDead = true;
+        deathCooldown = 1f;
+
+        animator.SetInteger("IsDie", 1);
     }
 }
