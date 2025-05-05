@@ -997,6 +997,7 @@ MonoBehaviour:
   closeDoor: {fileID: 1479017511}
   openDoor: {fileID: 480291024}
   doorCollider: {fileID: 400415768}
+  floorObj: {fileID: 896447862}
 --- !u!1 &435184489
 GameObject:
   m_ObjectHideFlags: 0
@@ -1825,6 +1826,7 @@ MonoBehaviour:
   closeDoor: {fileID: 981056806}
   openDoor: {fileID: 1829524270}
   doorCollider: {fileID: 595955761}
+  floorObj: {fileID: 1334558428}
 --- !u!1 &679897944
 GameObject:
   m_ObjectHideFlags: 0
@@ -12244,6 +12246,7 @@ MonoBehaviour:
   closeDoor: {fileID: 687096867}
   openDoor: {fileID: 455704936}
   doorCollider: {fileID: 887616426}
+  floorObj: {fileID: 1161572602}
 --- !u!1 &896447862
 GameObject:
   m_ObjectHideFlags: 0
@@ -13283,6 +13286,7 @@ MonoBehaviour:
   closeDoor: {fileID: 1204843408}
   openDoor: {fileID: 817330221}
   doorCollider: {fileID: 1059969479}
+  floorObj: {fileID: 65507073}
 --- !u!1 &1079170658
 GameObject:
   m_ObjectHideFlags: 0
@@ -22689,7 +22693,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1975522526}
-  - component: {fileID: 1975522527}
   m_Layer: 0
   m_Name: Doors
   m_TagString: Player
@@ -22716,21 +22719,6 @@ Transform:
   - {fileID: 816198423}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1975522527
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1975522525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60e7761cedbf4574882aa3e45dd92489, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  closeDoor: {fileID: 687096867}
-  openDoor: {fileID: 455704936}
-  doorCollider: {fileID: 887616426}
 --- !u!114 &2029733314
 MonoBehaviour:
   m_ObjectHideFlags: 0

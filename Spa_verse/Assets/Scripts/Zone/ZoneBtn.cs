@@ -14,6 +14,6 @@ public class ZoneBtn : MonoBehaviour
 
     public void OnClickZoneBtn()
     {
-        SceneManager.LoadScene(targetSceneName, LoadSceneMode.Additive); // 유니티에서 제공하는 씬 전환 메소드
+        SceneManager.LoadScene(targetSceneName); // 유니티에서 제공하는 씬 전환 메소드
     }
 }

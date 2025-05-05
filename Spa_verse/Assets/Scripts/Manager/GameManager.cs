@@ -18,10 +18,7 @@ public class GameManager : MonoBehaviour
 
             ScoreManager = gameObject.AddComponent<ScoreManager>(); // 점수 매니저 컴포넌트 추가
             ZoneBtn = FindAnyObjectByType<ZoneBtn>(); // 씬 전환 버튼 컴포넌트 가져오기
-            if (ZoneBtn == null)
-            {
-                Debug.LogError("씬이동 버튼 Null");
-            }
+
             UIManager = gameObject.AddComponent<UIManager>(); // UI 매니저 컴포넌트 추가
         }
         else

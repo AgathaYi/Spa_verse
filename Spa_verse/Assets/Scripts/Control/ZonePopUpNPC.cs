@@ -33,8 +33,14 @@ public class ZonePopUpNPC : MonoBehaviour
             PopUpUI.SetActive(false); // UI 비활성화
         }
 
-        npcSprite = transform.Find("MainSprite").GetComponent<SpriteRenderer>();
-        npcSprite.color = new Color(1, 1, 1, 0); // 투명
+        //npcSprite = transform.Find("MainSprite").GetComponent<SpriteRenderer>();
+        //npcSprite.color = new Color(1, 1, 1, 0); // 투명
+
+        SpriteRenderer[] npcSprites = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer spriteRenderer in npcSprites)
+        {
+            spriteRenderer.color = new Color(1, 1, 1, 0); // 투명
+        }
 
         npcCollider = GetComponent<BoxCollider2D>();
     }

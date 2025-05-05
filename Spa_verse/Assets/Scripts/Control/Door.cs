@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Door : MonoBehaviour
 {
@@ -17,10 +18,15 @@ public class Door : MonoBehaviour
 
     private bool isplayerInRange = false;
 
+    // Floor 컬려변경
+    public GameObject floorObj;
+    private Tilemap floorColor;
+
 
     void Start()
     {
         doorCollider = GetComponent<BoxCollider2D>();
+        floorColor = floorObj.GetComponent<Tilemap>();
         ChangeDoorUI();
     }
 
@@ -49,11 +55,13 @@ public class Door : MonoBehaviour
         {
             closeDoor.SetActive(false);
             openDoor.SetActive(true);
+            floorColor.color = new Color(0, 0, 0, 0);
         }
         else
         {
             closeDoor.SetActive(true);
             openDoor.SetActive(false);
+            floorColor.color = new Color(0, 0, 0, 0.8f);
         }
     }
 
