@@ -17,6 +17,13 @@ public class Obstacle : MonoBehaviour
 
     public float widthPadding = 4f;
 
+    BlueGameManager blueGameManager;
+
+    private void Start()
+    {
+        blueGameManager = BlueGameManager.Instance;
+    }
+
     public Vector3 SetRandomObstacle(Vector3 lastPosition, int obstacleCount)
     {
         float holeSize = Random.Range(holeSizeMin, holeSizeMax);
@@ -31,5 +38,14 @@ public class Obstacle : MonoBehaviour
         transform.position = obstaclePosition;
 
         return obstaclePosition;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        BluePlayer player = collision.GetComponent<BluePlayer>();
+        if (player != null)
+        {
+            blueGameManager.AddScore(1);
+        }
     }
 }
