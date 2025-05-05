@@ -31,6 +31,29 @@ public class BluePlayer : MonoBehaviour
 
     void Update()
     {
-        
+        if (isDead)
+        {
+
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+            {
+                isFlap = true;
+            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        Vector3 velocity = blueRigidbody.velocity;
+        velocity.x = fowardSpeed;
+
+
     }
 }
