@@ -54,6 +54,12 @@ public class BluePlayer : MonoBehaviour
         Vector3 velocity = blueRigidbody.velocity;
         velocity.x = fowardSpeed;
 
+        if (isFlap)
+        {
+            velocity.y += flapForce;
+            isFlap = false;
+        }
 
+        blueRigidbody.velocity = velocity;
     }
 }
