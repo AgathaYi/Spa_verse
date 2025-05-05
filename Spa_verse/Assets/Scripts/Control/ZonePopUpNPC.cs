@@ -1,33 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NPC : MonoBehaviour
+public class ZonePopUpNPC : MonoBehaviour
 {
-    [SerializeField] private Door redDoor;
+    [SerializeField] private Door doorCollider;
 
-    //NPC
+    [Header("NPC")]
     [SerializeField] private SpriteRenderer npcSprite;
     [SerializeField] private BoxCollider2D npcCollider;
-    [SerializeField] private GameObject npcSpeech;
+
+    [Header("PopUp")]
+    [SerializeField] private GameObject PopUpUI;
     [SerializeField] private Animator popUpAnimator;
 
-    private bool redZoneOpen = false;
+    private bool zoneOpen = false;
 
-    public GameObject RedZoneBtn;
+    public GameObject ZoneBtn;
 
 
     void Start() // 시작시
     {
-        if (npcSpeech != null)
+        if (PopUpUI != null)
         {
-            popUpAnimator = npcSpeech.GetComponent<Animator>();
-            npcSpeech.SetActive(true); // Animator
+            popUpAnimator = PopUpUI.GetComponent<Animator>();
+            PopUpUI.SetActive(true); // Animator 초기화
+            popUpAnimator.enabled = true;
             popUpAnimator.Rebind();
             popUpAnimator.Update(0);
-
-            npcSpeech.SetActive(false);
+            PopUpUI.SetActive(false); // UI 비활성화
         }
 
         npcSprite = transform.Find("MainSprite").GetComponent<SpriteRenderer>();
@@ -38,10 +41,10 @@ public class NPC : MonoBehaviour
 
     void Update() // 매프레임
     {
-        // 레드존 오픈 여부 확인
-        if (!redZoneOpen && redDoor != null && redDoor.IsOpenDoor)
+        // 존 오픈 여부 확인
+        if (!zoneOpen && doorCollider != null && doorCollider.IsOpenDoor)
         {
-            redZoneOpen = true;
+            zoneOpen = true;
             npcSprite.color = new Color(1, 1, 1, 1); // 불투명
             npcCollider.enabled = true; // NPC 충돌체 활성화
 
@@ -55,38 +58,28 @@ public class NPC : MonoBehaviour
     //충돌영역진입
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (redZoneOpen && collider.CompareTag("Player"))
+        if (zoneOpen && collider.CompareTag("Player"))
         {
-            if (npcSpeech != null)
-            {
-                npcSpeech.SetActive(true);
-
-                if (popUpAnimator != null)
-                {
-                    popUpAnimator.SetBool("IsPopDown", false);
-                }
-            }
+            PopUpUI.SetActive(true);
+            popUpAnimator.SetBool("IsPopDown", false);
         }
     }
 
     //충돌영역이탈
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (redZoneOpen && collider.CompareTag("Player"))
+        if (zoneOpen && collider.CompareTag("Player") && PopUpUI.activeSelf)
         {
-            if (npcSpeech != null && npcSpeech.activeSelf && popUpAnimator != null)
-            {
-                popUpAnimator.SetBool("IsPopDown", true);
-            }
+            popUpAnimator.SetBool("IsPopDown", true);
         }
-        
+
     }
 
     public void OnPopDown()
     {
-        if (npcSpeech != null)
+        if (PopUpUI != null)
         {
-            npcSpeech.SetActive(false);
+            PopUpUI.SetActive(false);
         }
     }
 }
