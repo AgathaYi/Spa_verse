@@ -13,8 +13,11 @@ public class BluePlayer : MonoBehaviour
     float deathCooldown = 0f;
     bool isFlap = false;
 
+    BlueGameManager blueGameManager = null;
+
     void Start()
     {
+        blueGameManager = BlueGameManager.Instance; // 게임매니져의 어웨이크와 꼬이지 않도록 !
         animator = GetComponentInChildren<Animator>();
         blueRigidbody = GetComponent<Rigidbody2D>();
 
@@ -33,14 +36,18 @@ public class BluePlayer : MonoBehaviour
     {
         if (isDead)
         {
-            if (deathCooldown > 0)
+            if (deathCooldown <= 0)
             {
-                deathCooldown -= Time.deltaTime;
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+                {
+                    blueGameManager.RestartGame();
+                    isDead = false;
+                    deathCooldown = 0.5f;
+                }
             }
             else
             {
-                isDead = false;
-                deathCooldown = 0.5f;
+                deathCooldown -= Time.deltaTime;
             }
         }
         else
@@ -56,16 +63,7 @@ public class BluePlayer : MonoBehaviour
     {
         if (isDead)
         {
-            if (deathCooldown > 0)
-            {
-                deathCooldown -= Time.deltaTime;
-            }
-            else
-            {
-                animator.SetTrigger("Die");
-                isDead = false;
-                deathCooldown = 0.5f;
-            }
+            return;
         }
 
         Vector3 velocity = blueRigidbody.velocity;
@@ -90,9 +88,10 @@ public class BluePlayer : MonoBehaviour
             return;
         }
 
+        animator.SetInteger("IsDie", 1);
         isDead = true;
         deathCooldown = 1f;
 
-        animator.SetInteger("IsDie", 1);
+        blueGameManager.GameOver();
     }
 }

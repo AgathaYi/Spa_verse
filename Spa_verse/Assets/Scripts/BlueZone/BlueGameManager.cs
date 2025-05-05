@@ -1,18 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BlueGameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    static BlueGameManager blueGameManager;
+    public static BlueGameManager Instance { get => blueGameManager; }
+
+    private int currentScore = 0; // 현재 점수
+
+    private void Awake()
     {
-        
+        blueGameManager = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void GameOver()
     {
-        
+        Debug.Log("게임 오버");
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void AddScore (int score)
+    {
+        currentScore += score;
+        Debug.Log("현재 점수: " + currentScore);
     }
 }

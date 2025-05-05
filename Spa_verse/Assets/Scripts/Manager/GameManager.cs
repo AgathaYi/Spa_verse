@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; } // 싱글톤 인스턴스
+    static GameManager gameManager;
+    public static GameManager Instance { get => gameManager; } // 싱글톤 인스턴스
     public ScoreManager ScoreManager { get; private set; } // 점수 매니저 인스턴스
     public ZoneBtn ZoneBtn { get; private set; } // 씬 전환버튼 인스턴스
     public UIManager UIManager { get; private set; } // UI 매니저 인스턴스
 
     private void Awake()
     {
-        if (Instance == null)
+        if (gameManager == null)
         {
-            Instance = this;
+            gameManager = this;
             DontDestroyOnLoad(gameObject); // 씬이 바뀌어도 파괴되지 않음!!
 
             ScoreManager = gameObject.AddComponent<ScoreManager>(); // 점수 매니저 컴포넌트 추가
