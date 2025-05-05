@@ -30,7 +30,6 @@ public class Door : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                Debug.Log("문열림");
                 DoorCheck();
             }
         }
@@ -64,7 +63,6 @@ public class Door : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             isplayerInRange = true;
-            Debug.Log("문근처");
         }
     }
 
@@ -73,7 +71,6 @@ public class Door : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             isplayerInRange = false;
-            Debug.Log("문밖");
         }
     }
 }

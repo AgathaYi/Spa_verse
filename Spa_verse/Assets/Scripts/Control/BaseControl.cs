@@ -7,7 +7,6 @@ public class BaseControl : MonoBehaviour // 생명체들의 부모
 {
     // 중력, 충돌체, 이동, 점프력, 공격력, 체력, 사망여부, 공격여부, 행동여부 ...
     // Rigidbody2D, Collider2D, Animator, SpriteRenderer, AudioSource, Transform, GameObject
-    // private : 소문자시작.
 
     protected Rigidbody2D Rigidbody;
 
