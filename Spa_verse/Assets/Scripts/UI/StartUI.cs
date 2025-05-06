@@ -34,9 +34,9 @@ public class StartUI : BaseUI
         if (currentSceneName == "MainScene")
         {
             this.gameObject.SetActive(false);
-            if (GameManager.Instance.UIManager != null)
+            if (uiManager != null)
             {
-                GameManager.Instance.UIManager.SetPlayGame();
+                uiManager.SetPlayGame();
             }
             return;
         }
@@ -44,14 +44,14 @@ public class StartUI : BaseUI
         // 메인씬이 아닐때, 게임 시작
         if (currentSceneName == "BlueZone")
         {
-            if (GameManager.Instance.UIManager != null)
+            if (uiManager != null)
             {
-                GameManager.Instance.UIManager.SetPlayGame();
+                uiManager.SetPlayGame();
                 BlueGameManager.Instance.GameStart();
             }
             else
             {
-                Debug.LogError("UIManager .. ㅠㅠㅠ null");
+                Debug.LogError("UIManager .null");
             }
         }
         //else if (currentSceneName == "RedZone")
@@ -71,13 +71,11 @@ public class StartUI : BaseUI
     public void OnCloseButtonClick()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
-        if (currentSceneName != "MainScene")
+        if (currentSceneName == "MainScene")
         {
-            Debug.Log("해당 씬 colse버튼 비활성화");
             return;
         }
 
-        // 메인씬으로 이동
         ZoneBtn zoneBtn = GameManager.Instance.ZoneBtn;
         if (zoneBtn != null)
         {
@@ -85,7 +83,7 @@ public class StartUI : BaseUI
         }
         else
         {
-            Application.Quit();
+            SceneManager.LoadScene("MainScene");
         }
     }
 

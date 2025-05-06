@@ -5,20 +5,26 @@ using UnityEngine.SceneManagement;
 
 public class BlueGameManager : MonoBehaviour
 {
-    GameManager gameManager;
-    static BlueGameManager blueGameManager;
-    public static BlueGameManager Instance { get => blueGameManager; }
+    public static BlueGameManager Instance { get; private set; } // 싱글톤 인스턴스
+    public int currentScore { get; private set; } // 현재 점수
+    public int currentCoin { get; private set; } // 현재 코인
 
-    public BluePlayer player { get; private set; } // 블루존 플레이어
 
-    public GameObject startUI;
+    [SerializeField] private GameObject startUI;
     public bool isGameStart = false;
-    private int currentScore = 0; // 현재 점수
+
+
 
     private void Awake()
     {
-        blueGameManager = this;
-        gameManager = GameManager.Instance;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Start()
@@ -26,6 +32,8 @@ public class BlueGameManager : MonoBehaviour
         Time.timeScale = 0f;
         isGameStart = false;
         startUI.SetActive(true);
+        currentScore = 0;
+        currentCoin = 0;
     }
 
     public void GameStart()
@@ -34,24 +42,31 @@ public class BlueGameManager : MonoBehaviour
         isGameStart = true;
         startUI.SetActive(false);
     }
-    public void RestartGame()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
 
     public void AddScore (int score)
     {
         currentScore += score;
-        
-        gameManager.StatsManager.AddScore(score);
-        gameManager.StatsManager.AddCoin(score); // 1점 = 1코인 지급 예정
-        gameManager.UIManager.UpdateScoreUI(currentScore);
-        gameManager.UIManager.UpdateCoinUI(currentScore);
     }
 
+    public void AddCoin(int coin)
+    {
+        currentCoin += coin;
+    }
+
+    public void CoinSavePlayer()
+    {
+        GameManager.Instance.StatsManager.AddCoin(currentCoin);
+        SceneManager.LoadScene("MainScene");
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
     public void GameOver()
     {
         Debug.Log("게임 오버");
+        // 게임 over ui 별도관리
     }
 
 }

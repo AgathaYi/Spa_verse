@@ -7,22 +7,65 @@ using UnityEngine.UI;
 public class GameOverUI : BaseUI
 {
     [SerializeField] private Button restartButton;
-    [SerializeField] private Button exitButton;
+    [SerializeField] private Button closeButton;
+
     public override void Init(UIManager uiManager)
     {
         base.Init(uiManager);
 
         restartButton.onClick.AddListener(OnRestartButtonClick);
-        exitButton.onClick.AddListener(OnExitButtonClick);
+        closeButton.onClick.AddListener(OnExitButtonClick);
     }
     public void OnRestartButtonClick()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        if (currentSceneName == "MainScene")
+        {
+            this.gameObject.SetActive(false);
+            if (uiManager != null)
+            {
+                uiManager.SetPlayGame();
+            }
+            return;
+        }
+
+        // 메인씬이 아닐때, 게임 시작
+        if (currentSceneName == "BlueZone")
+        {
+            if (uiManager != null)
+            {
+                uiManager.SetPlayGame();
+                BlueGameManager.Instance.GameStart();
+            }
+            else
+            {
+                Debug.LogError("UIManager .null");
+            }
+        }
+        //else if (currentSceneName == "RedZone")
+        //{
+        //    RedGameManager.Instance.GameStart();
+        //}
     }
 
     public void OnExitButtonClick()
     {
-        Application.Quit();
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        if (currentSceneName == "MainScene")
+        {
+            return;
+        }
+
+        ZoneBtn zoneBtn = GameManager.Instance.ZoneBtn;
+        if (zoneBtn != null)
+        {
+            zoneBtn.OnClickCancleBtn();
+        }
+        else
+        {
+            SceneManager.LoadScene("MainScene");
+        }
+
     }
 
     protected override UIState GetUIState()

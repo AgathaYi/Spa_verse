@@ -5,17 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    static GameManager gameManager;
-    public static GameManager Instance { get => gameManager; } // 싱글톤 인스턴스
-    public StatsManager StatsManager { get; private set; } // 점수 매니저 인스턴스
-    public ZoneBtn ZoneBtn { get; private set; } // 씬 전환버튼 인스턴스
-    public UIManager UIManager { get; private set; } // UI 매니저 인스턴스
+    public static GameManager Instance { get; private set; }
+    public StatsManager StatsManager { get; private set; } // 점수, 코인 등
+    public ZoneBtn ZoneBtn { get; private set; } // 씬 전환버튼
+    public UIManager UIManager { get; private set; }
+
+    private string targetSceneName;
 
     private void Awake()
     {
         if (Instance == null)
         {
-            gameManager = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject); // 씬이 바뀌어도 파괴되지 않음!!
 
             StatsManager = gameObject.AddComponent<StatsManager>();
@@ -25,13 +26,14 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject); // 이미 존재하는 경우 중복 방지!!
         }
+
     }
 
     //==========================  ▲ ===============================//
 
     // 게임 시작, 일시정지, 재시작, 종료, 클리어, 플레이어와 게임사이 시스템 관리, 및 데이터 저장
 
-    void Start()
+    private void Start()
     {
         // UI매니져 null 계속 뜸.. 씬에서 찾아오고, 없으면 문제 될 수 있움
         UIManager = FindObjectOfType<UIManager>(true);
@@ -39,6 +41,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("UI매니져 못찾았음");
         }
+        
     }
 
     void Update()
@@ -59,29 +62,75 @@ public class GameManager : MonoBehaviour
 
     public void ResetScene(string sceneName)
     {
-        switch (sceneName)
+        UIManager = FindObjectOfType<UIManager>(true);
+
+        //UI매니져/zoneBtn/ null이어도 플레이어 연결 되어야함.
+        if (UIManager == null)
         {
-            case "MainScene":
-                break;
-
-            case "BlueZone":
-                // 블루존 Init 코드
-                break;
-
-            case "RedZone":
-                // 레드존 Init 코드
-                break;
-
-            //case "GreenZoneBtn":
-            //    break;
-
-            //case "YellowZoneBtn":
-            //    break;
-
-            default:
-                Debug.LogError("Zone 이름 확인 필요 : " + sceneName);
-                break;
+            Debug.Log("UI매니져 못찾았음");
+            return;
         }
+        if (ZoneBtn == null)
+        {
+            Debug.Log("ZoneBtn 못찾았음");
+            return;
+        }
+
+        var player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+        {
+            Debug.Log("플레이어 못찾았음");
+            return;
+        }
+        else // 플레이어 wasd 동작 안함 해결
+        {
+            var playerHandler = player.GetComponent<MainPlayerHandler>();
+            if (playerHandler != null)
+            {
+                playerHandler.enabled = true;
+            }
+            else
+            {
+                Debug.Log("플레이어 핸들러 못찾았음");
+            }
+        }
+
+            switch (sceneName)
+            {
+                case "MainScene":
+                    break;
+
+                case "BlueZone":
+                    // 블루존 Init 코드
+                    break;
+
+                case "RedZone":
+                    // 레드존 Init 코드
+                    break;
+
+                //case "GreenZoneBtn":
+                //    break;
+
+                //case "YellowZoneBtn":
+                //    break;
+
+                default:
+                    Debug.LogError("Zone 이름 확인 필요 : " + sceneName);
+                    break;
+            }
     }
 
+
+    // ZoneBtn null 일떄 씬 전환사용을 위함.. 
+    public void OnSceneLoad(Scene scene, LoadSceneMode mode)
+    {
+        ResetScene(scene.name);
+        SceneManager.sceneLoaded -= OnSceneLoad;
+    }
+
+    public void OnClickSceneChangeBtn()
+    {
+        SceneManager.sceneLoaded += OnSceneLoad;
+        SceneManager.LoadScene(targetSceneName);
+    }
 }

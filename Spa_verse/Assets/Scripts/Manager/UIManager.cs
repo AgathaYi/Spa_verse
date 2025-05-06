@@ -41,6 +41,8 @@ public class UIManager : MonoBehaviour
         {
             gameOverUI.Init(this);
         }
+
+        ChangeState(UIState.Start);
     }
 
     // MiniGameZone

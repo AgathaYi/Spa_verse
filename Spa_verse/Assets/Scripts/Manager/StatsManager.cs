@@ -4,29 +4,29 @@ using UnityEngine;
 
 public class StatsManager : MonoBehaviour
 {
-    GameManager gameManager;
     // 점수, 코인, 점수가 쌓이면, 레벨Up에 따른 zone 오픈 여부 => 계산로직 및 데이터 저장
-    public int score = 0;
-    public int coin = 0;
-    //public int level = 1;
+
+    public int totalScore { get; private set; } // 총 점수
+    public int totalCoin { get; private set; } // 총 코인
+    //public int level;
 
     public void AddScore(int amount)
     {
-        score += amount;
-        Debug.Log("점수: " + score);
+        totalScore += amount;
+        Debug.Log("점수: " + totalScore);
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.UIManager.UpdateScoreUI(score);
+            GameManager.Instance.UIManager.UpdateScoreUI(totalScore);
         }
     }
 
     public void AddCoin(int amount)
     {
-        coin += amount;
-        Debug.Log("코인: " + coin);
+        totalCoin += amount;
+        Debug.Log("코인: " + totalCoin);
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.UIManager.UpdateCoinUI(coin);
+            GameManager.Instance.UIManager.UpdateCoinUI(totalCoin);
         }
     }
 
