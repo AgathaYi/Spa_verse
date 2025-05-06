@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatHandler : MonoBehaviour
+public class MainPlayerHandler : MonoBehaviour
 {
     [Range(1, 100)][SerializeField] private int hp = 100;
     public int HP

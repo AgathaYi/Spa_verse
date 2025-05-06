@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class BlueGameManager : MonoBehaviour
 {
+    GameManager gameManager;
     static BlueGameManager blueGameManager;
     public static BlueGameManager Instance { get => blueGameManager; }
 
@@ -17,6 +18,7 @@ public class BlueGameManager : MonoBehaviour
     private void Awake()
     {
         blueGameManager = this;
+        gameManager = GameManager.Instance;
     }
 
     private void Start()
@@ -41,8 +43,10 @@ public class BlueGameManager : MonoBehaviour
     {
         currentScore += score;
         
-        GameManager.Instance.ScoreManager.AddScore(score);
-        GameManager.Instance.ScoreManager.AddCoin(score); // 1점 = 1코인 지급 예정
+        gameManager.StatsManager.AddScore(score);
+        gameManager.StatsManager.AddCoin(score); // 1점 = 1코인 지급 예정
+        gameManager.UIManager.UpdateScoreUI(currentScore);
+        gameManager.UIManager.UpdateCoinUI(currentScore);
     }
 
     public void GameOver()

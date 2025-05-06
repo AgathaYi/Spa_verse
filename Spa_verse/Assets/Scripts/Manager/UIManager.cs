@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum UIState
 {
@@ -22,43 +23,27 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        startUI = GetComponentInChildren<StartUI>();
-        startUI.Init(this);
-        gameUI = FindObjectOfType<GameUI>();
-        gameUI.Init(this);
-        gameOverUI = FindObjectOfType<GameOverUI>();
-        gameOverUI.Init(this);
-
-        ChangeState(UIState.Start);
-
-    }
-
-    // 씬별 초기화
-    public void ResetSceneUI()
-    {
-        startUI = FindObjectOfType<StartUI>();
+        //씬별 초기화
+        startUI = GetComponentInChildren<StartUI>(true); //UI매니져 자식 아래로만 찾기
         if (startUI != null)
         {
             startUI.Init(this);
         }
 
-        gameUI = FindObjectOfType<GameUI>();
+        gameUI = GetComponentInChildren<GameUI>(true);
         if (gameUI != null)
         {
             gameUI.Init(this);
         }
 
-        gameOverUI = FindObjectOfType<GameOverUI>();
+        gameOverUI = GetComponentInChildren<GameOverUI>(true);
         if (gameOverUI != null)
         {
             gameOverUI.Init(this);
         }
-
-        ChangeState(UIState.Start);
     }
 
-
-    // 게임 시작 창~~
+    // MiniGameZone
     public void SetPlayGame()
     {
         ChangeState(UIState.Game);
@@ -69,21 +54,63 @@ public class UIManager : MonoBehaviour
         ChangeState(UIState.GameOver);
     }
 
-    public void ChangeWave(int waveIndex)
-    {
-        gameUI.UpdateWaveText(waveIndex);
-    }
-
-    public void ChanPlayerHp(float currentHp, float maxHp)
-    {
-        gameUI.UpdateHpSlider(currentHp / maxHp);
-    }
+    //public void ChanPlayerHp(float currentHp, float maxHp)
+    //{
+    //    gameUI.UpdateHpSlider(currentHp / maxHp);
+    //}
 
     public void ChangeState(UIState state)
     {
+        // 씬별로 UI 상태 다름
         currentState = state;
-        startUI.SetActive(currentState);
-        gameUI.SetActive(currentState);
-        gameOverUI.SetActive(currentState);
+
+        if (startUI != null)
+        {
+            startUI.SetActive(state);
+        }
+        if (gameUI != null)
+        {
+            gameUI.SetActive(state);
+        }
+        if (gameOverUI != null)
+        {
+            gameOverUI.SetActive(state);
+        }
+    }
+
+    public void UpdateScoreUI(int score)
+    {
+        if (gameUI != null)
+        {
+            gameUI.UpScoreText(score);
+
+        }
+    }
+
+    public void UpdateCoinUI(int coin)
+    {
+        if (gameUI != null)
+        {
+            gameUI.UpCoinText(coin);
+        }
+    }
+
+    // 씬별로 Null 값 다름.
+    public void SetActive(bool isActive)
+    {
+        if (gameOverUI != null)
+        {
+            gameOverUI.gameObject.SetActive(isActive);
+        }
+
+        if (startUI != null)
+        {
+            startUI.gameObject.SetActive(isActive);
+        }
+
+        if (gameUI != null)
+        {
+            gameUI.gameObject.SetActive(isActive);
+        }
     }
 }

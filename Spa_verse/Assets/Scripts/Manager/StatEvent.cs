@@ -10,7 +10,7 @@ public class StatEvent : MonoBehaviour
 
     public void GetStat()
     {
-        GameManager.Instance.ScoreManager.AddScore(getScore);
+        GameManager.Instance.StatsManager.AddScore(getScore);
         //GameManager.Instance.CoinManager.AddCoin(getCoin);
 
         Debug.Log("Score: " + getScore);

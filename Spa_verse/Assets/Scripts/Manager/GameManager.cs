@@ -7,18 +7,18 @@ public class GameManager : MonoBehaviour
 {
     static GameManager gameManager;
     public static GameManager Instance { get => gameManager; } // 싱글톤 인스턴스
-    public ScoreManager ScoreManager { get; private set; } // 점수 매니저 인스턴스
+    public StatsManager StatsManager { get; private set; } // 점수 매니저 인스턴스
     public ZoneBtn ZoneBtn { get; private set; } // 씬 전환버튼 인스턴스
     public UIManager UIManager { get; private set; } // UI 매니저 인스턴스
 
     private void Awake()
     {
-        if (gameManager == null)
+        if (Instance == null)
         {
             gameManager = this;
             DontDestroyOnLoad(gameObject); // 씬이 바뀌어도 파괴되지 않음!!
 
-            ScoreManager = gameObject.AddComponent<ScoreManager>(); // 점수 매니저 컴포넌트 추가
+            StatsManager = gameObject.AddComponent<StatsManager>();
             ZoneBtn = FindAnyObjectByType<ZoneBtn>(); // 씬 전환 버튼 컴포넌트 가져오기
         }
         else
@@ -33,46 +33,29 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-
+        // UI매니져 null 계속 뜸.. 씬에서 찾아오고, 없으면 문제 될 수 있움
+        UIManager = FindObjectOfType<UIManager>(true);
+        if (UIManager == null)
+        {
+            Debug.Log("UI매니져 못찾았음");
+        }
     }
 
     void Update()
     {
-        
+
     }
 
-    //==========================  ▼ ===============================//
+    //==========================  메인씬  ===============================//
 
     public void GameStart()
     {
+        Time.timeScale = 1f; // 메인씬 동작 시작
         Debug.Log("게임 시작");
+        // RedZone 지하던전 훈련가능한 기능 만들기
     }
 
-    public void GamePause()
-    {
-        Debug.Log("게임 일시정지");
-    }
-
-    public void GameRestart()
-    {
-        Debug.Log("게임 재시작");
-    }
-
-    public void GameExit()
-    {
-        Debug.Log("게임 종료");
-        Application.Quit();
-    }
-
-    public void GameClear()
-    {
-        Debug.Log("게임 클리어");
-    }
-
-    public void GameOver()
-    {
-        Debug.Log("게임 오버");
-    }
+    //==========================  미니게임 ===============================//
 
     public void ResetScene(string sceneName)
     {
@@ -96,8 +79,9 @@ public class GameManager : MonoBehaviour
             //    break;
 
             default:
-                Debug.LogError("Zone 이름 확인 필요 : "+ sceneName);
+                Debug.LogError("Zone 이름 확인 필요 : " + sceneName);
                 break;
         }
     }
+
 }

@@ -21,13 +21,13 @@ public class BaseControl : MonoBehaviour // 생명체들의 부모
     protected Vector2 lookDirection = Vector2.zero;
     public Vector2 LookDirection { get => lookDirection; }
 
-    protected StatHandler StatHandler;
+    protected MainPlayerHandler MainHandler;
 
 
     protected virtual void Awake()
     {
         Rigidbody = GetComponent<Rigidbody2D>();
-        StatHandler = GetComponent<StatHandler>();
+        MainHandler = GetComponent<MainPlayerHandler>();
     }
 
     void Start()
@@ -55,7 +55,7 @@ public class BaseControl : MonoBehaviour // 생명체들의 부모
     // 이동 속도, 실제 이동
     private void Move(Vector2 direction)
     {
-        float runSpeed = StatHandler.MoveSpeed;
+        float runSpeed = MainHandler.MoveSpeed;
 
         if (isRunning)
         {

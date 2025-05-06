@@ -8,24 +8,24 @@ public class ResourceController : MonoBehaviour
     [SerializeField] private float hpChangeDelay = 0.1f;
 
     private BaseControl baseControl;
-    private StatHandler statHandler;
+    private MainPlayerHandler mainHandler;
 
     private float timeSinceLastChange = float.MaxValue;
 
     public float CurrentHp { get; private set; }
-    public float MaxHp => statHandler.HP;
+    public float MaxHp => mainHandler.HP;
     private Action<float, float> onHpChange;
 
     private void Awake()
     {
         baseControl = GetComponent<BaseControl>();
-        statHandler = GetComponent<StatHandler>();
+        mainHandler = GetComponent<MainPlayerHandler>();
         
     }
 
     private void Start()
     {
-        CurrentHp = statHandler.HP;
+        CurrentHp = mainHandler.HP;
     }
 
     private void Update()
