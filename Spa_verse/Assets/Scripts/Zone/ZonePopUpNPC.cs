@@ -15,11 +15,9 @@ public class ZonePopUpNPC : MonoBehaviour
     [Header("PopUp")]
     [SerializeField] private GameObject PopUpUI;
     [SerializeField] private Animator popUpAnimator;
+    [SerializeField] private GameObject checkSceneChangeUI;
 
     private bool zoneOpen = false;
-
-    public GameObject ZoneBtn;
-
 
     void Start() // Ω√¿€Ω√
     {

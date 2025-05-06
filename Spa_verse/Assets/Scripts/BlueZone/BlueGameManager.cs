@@ -8,6 +8,8 @@ public class BlueGameManager : MonoBehaviour
     static BlueGameManager blueGameManager;
     public static BlueGameManager Instance { get => blueGameManager; }
 
+    public BluePlayer player { get; private set; } // 블루존 플레이어
+
     private int currentScore = 0; // 현재 점수
 
     private void Awake()

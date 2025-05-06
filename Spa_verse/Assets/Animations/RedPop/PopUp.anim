@@ -117,7 +117,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: RedZoneBtn
+    path: Accept
   m_FloatCurves: []
   m_PPtrCurves: []
   m_SampleRate: 6
@@ -146,7 +146,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 3666098369
+      path: 3029133314
       attribute: 3
       script: {fileID: 0}
       typeID: 4
@@ -427,7 +427,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.x
-    path: RedZoneBtn
+    path: Accept
     classID: 224
     script: {fileID: 0}
     flags: 0
@@ -466,7 +466,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.y
-    path: RedZoneBtn
+    path: Accept
     classID: 224
     script: {fileID: 0}
     flags: 0
@@ -474,6 +474,15 @@ AnimationClip:
     curve:
       serializedVersion: 2
       m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
         value: 1
@@ -487,7 +496,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.z
-    path: RedZoneBtn
+    path: Accept
     classID: 224
     script: {fileID: 0}
     flags: 0

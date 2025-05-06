@@ -9,9 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/BlueZoneBtn.unity
+    path: Assets/Scenes/BlueZone.unity
     guid: b083359415af37d44bf18ecc6b21ec64
   - enabled: 1
-    path: Assets/Scenes/RedZoneBtn.unity
+    path: Assets/Scenes/RedZone.unity
     guid: 1dc18e8168c5fbe419f7538c6f26b776
   m_configObjects: {}

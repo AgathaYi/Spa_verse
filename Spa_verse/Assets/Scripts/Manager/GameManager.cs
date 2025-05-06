@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,8 +20,6 @@ public class GameManager : MonoBehaviour
 
             ScoreManager = gameObject.AddComponent<ScoreManager>(); // 점수 매니저 컴포넌트 추가
             ZoneBtn = FindAnyObjectByType<ZoneBtn>(); // 씬 전환 버튼 컴포넌트 가져오기
-
-            UIManager = gameObject.AddComponent<UIManager>(); // UI 매니저 컴포넌트 추가
         }
         else
         {
@@ -34,7 +33,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     void Update()
@@ -73,5 +72,32 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         Debug.Log("게임 오버");
+    }
+
+    public void ResetScene(string sceneName)
+    {
+        switch (sceneName)
+        {
+            case "MainScene":
+                break;
+
+            case "BlueZone":
+                // 블루존 Init 코드
+                break;
+
+            case "RedZone":
+                // 레드존 Init 코드
+                break;
+
+            //case "GreenZoneBtn":
+            //    break;
+
+            //case "YellowZoneBtn":
+            //    break;
+
+            default:
+                Debug.LogError("Zone 이름 확인 필요 : "+ sceneName);
+                break;
+        }
     }
 }
