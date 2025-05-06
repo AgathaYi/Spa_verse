@@ -12,28 +12,41 @@ public class CoinArrange : MonoBehaviour
 
     private void Start()
     {
-        if (arrangeBound != null)
+        if (coinCollider != null)
         {
             arrangeBound = coinCollider.bounds;
             CoinPoint();
-        }
-        else
-        {
-            Debug.LogError("Collider2D가 null!");
         }
     }
 
     private void CoinPoint()
     {
+        // 플레이어랑 겹침. 시작하자마자 코인 회수됨.  - 해결
+        Vector2 playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+
         for (int i = 0; i < coinCount; i++)
         {
-            // 랜덤한 위치 생성
-            Vector2 randomPos = new Vector2(
-                Random.Range(arrangeBound.min.x, arrangeBound.max.x),
-                Random.Range(arrangeBound.min.y, arrangeBound.max.y)
-            );
+            Vector3 randomPosition;
+            int count = 0;
+
+            do
+            {
+                randomPosition = new Vector3(
+                    Random.Range(arrangeBound.min.x, arrangeBound.max.x),
+                    Random.Range(arrangeBound.min.y, arrangeBound.max.y),
+                    0f
+                );
+                count++;
+                if (count > 10) // 무한 루프 방지
+                {
+                    Debug.LogWarning("코인 생성 실패");
+                    break;
+                }
+            }
+            while (Vector2.Distance(randomPosition, playerPosition) < 1f); // 플레이어와의 거리 체크
+
             // 코인 생성
-            GameObject coin = Instantiate(coinPrefab, randomPos, Quaternion.identity);
+            GameObject coin = Instantiate(coinPrefab, randomPosition, Quaternion.identity);
             coin.transform.SetParent(transform); // 부모 설정
         }
     }
