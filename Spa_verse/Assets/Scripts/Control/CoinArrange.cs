@@ -27,7 +27,14 @@ public class CoinArrange : MonoBehaviour
     {
         for (int i = 0; i < coinCount; i++)
         {
-            Vector3 coinPosition = 
+            // 랜덤한 위치 생성
+            Vector2 randomPos = new Vector2(
+                Random.Range(arrangeBound.min.x, arrangeBound.max.x),
+                Random.Range(arrangeBound.min.y, arrangeBound.max.y)
+            );
+            // 코인 생성
+            GameObject coin = Instantiate(coinPrefab, randomPos, Quaternion.identity);
+            coin.transform.SetParent(transform); // 부모 설정
         }
     }
 }
