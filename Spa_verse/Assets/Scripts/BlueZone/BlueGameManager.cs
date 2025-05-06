@@ -10,6 +10,8 @@ public class BlueGameManager : MonoBehaviour
 
     public BluePlayer player { get; private set; } // 블루존 플레이어
 
+    public GameObject startUI;
+    public bool isGameStart = false;
     private int currentScore = 0; // 현재 점수
 
     private void Awake()
@@ -17,11 +19,19 @@ public class BlueGameManager : MonoBehaviour
         blueGameManager = this;
     }
 
-    public void GameOver()
+    private void Start()
     {
-        Debug.Log("게임 오버");
+        Time.timeScale = 0f;
+        isGameStart = false;
+        startUI.SetActive(true);
     }
 
+    public void GameStart()
+    {
+        Time.timeScale = 1f;
+        isGameStart = true;
+        startUI.SetActive(false);
+    }
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -30,6 +40,14 @@ public class BlueGameManager : MonoBehaviour
     public void AddScore (int score)
     {
         currentScore += score;
-        Debug.Log("현재 점수: " + currentScore);
+        
+        GameManager.Instance.ScoreManager.AddScore(score);
+        GameManager.Instance.ScoreManager.AddCoin(score); // 1점 = 1코인 지급 예정
     }
+
+    public void GameOver()
+    {
+        Debug.Log("게임 오버");
+    }
+
 }
