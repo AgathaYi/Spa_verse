@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class PopUpNPC : MonoBehaviour
 {
-
     [Header("NPC condition")]
     [SerializeField] private Door doorCollider; // 문 열림 체크 (추후, 문열림 레벨 조건 추가 예정)
     [SerializeField] private SpriteRenderer npcSprite;
@@ -48,14 +47,12 @@ public class PopUpNPC : MonoBehaviour
             popUpUI.SetActive(false); // UI 비활성화
         }
 
-        SpriteRenderer[] npcSprites = GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer spriteRenderer in npcSprites)
+        foreach (SpriteRenderer spriteRenderer in GetComponentsInChildren<SpriteRenderer>())
         {
-            spriteRenderer.color = new Color(1, 1, 1, 0); // 투명
+            spriteRenderer.color = new Color(0f, 0f, 0f, 0f);
         }
 
-        npcCollider = GetComponent<BoxCollider2D>();
-        popUpUI.SetActive(false);
+        npcCollider.enabled = false; // NPC 충돌체 비활성화
         checkSceneUI.SetActive(false);
     }
 
@@ -65,9 +62,16 @@ public class PopUpNPC : MonoBehaviour
         if (!zoneOpen && doorCollider != null && doorCollider.IsOpenDoor)
         {
             zoneOpen = true;
-            npcSprite.color = new Color(1, 1, 1, 1); // 불투명
-            npcCollider.enabled = true; // NPC 충돌체 활성화
 
+            // NPC 스프라이트 밝고 불투명하게 처리
+
+            foreach (SpriteRenderer spriteRenderer in GetComponentsInChildren<SpriteRenderer>())
+            {
+                spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+            }
+
+
+            npcCollider.enabled = true; // NPC 충돌체 활성화
             if (popUpAnimator != null)
             {
                 popUpAnimator.enabled = true;
@@ -97,28 +101,19 @@ public class PopUpNPC : MonoBehaviour
 
     public void OnAcceptBtn()
     {
-        if (zoneOpen && popUpUI.activeSelf)
-        {
-            popUpUI.SetActive(false);
-            checkSceneUI.SetActive(true);
-        }
+        popUpUI.SetActive(false);
+        checkSceneUI.SetActive(true);
     }
 
     public void OnYesBtn()
     {
-        if (zoneOpen && checkSceneUI.activeSelf)
-        {
-            SceneManager.LoadScene(targetSceneName);
-        }
+        SceneManager.LoadScene(targetSceneName);
     }
 
     public void OnNoBtn()
     {
-        if (zoneOpen && checkSceneUI.activeSelf)
-        {
-            checkSceneUI.SetActive(false);
-            popUpUI.SetActive(false);
-        }
+        checkSceneUI.SetActive(false);
+        popUpUI.SetActive(false);
     }
 
     public void OnPopDown()

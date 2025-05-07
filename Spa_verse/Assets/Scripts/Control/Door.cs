@@ -14,9 +14,8 @@ public class Door : MonoBehaviour
 
     // 오픈 여부
     private bool isOpen = false;
-    public bool IsOpenDoor { get => isOpen; }
-
     private bool isplayerInRange = false;
+    public bool IsOpenDoor => isOpen;
 
     // Floor 컬려변경
     public GameObject floorObj;
@@ -36,18 +35,13 @@ public class Door : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                DoorCheck();
+                isOpen = !isOpen;
+                doorCollider.enabled = !doorCollider.enabled; // 문이 열리면 충돌체 비활성화
+                ChangeDoorUI();
             }
         }
     }
 
-    // 문여닫기 확인
-    public void DoorCheck()
-    {
-        isOpen = !isOpen;
-        doorCollider.enabled = !doorCollider.enabled; // 문이 열리면 충돌체 비활성화
-        ChangeDoorUI();
-    }
 
     private void ChangeDoorUI()
     {
@@ -55,13 +49,13 @@ public class Door : MonoBehaviour
         {
             closeDoor.SetActive(false);
             openDoor.SetActive(true);
-            floorColor.color = new Color(0, 0, 0, 0);
+            floorColor.color = new Color(1, 1, 1, 1);
         }
         else
         {
             closeDoor.SetActive(true);
             openDoor.SetActive(false);
-            floorColor.color = new Color(0, 0, 0, 0.8f);
+            floorColor.color = new Color(0, 0, 0, 1);
         }
     }
 

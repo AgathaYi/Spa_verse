@@ -11,8 +11,8 @@ public class StatEvent : MonoBehaviour
     public void GetStat()
     {
         GameManager.Instance.StatsManager.AddScore(getScore);
-        //GameManager.Instance.CoinManager.AddCoin(getCoin);
+        GameManager.Instance.StatsManager.AddCoin(getCoin);
 
-        Debug.Log("Score: " + getScore);
+        Debug.Log($"Score: {getScore},   coin: {getCoin}");
     }
 }

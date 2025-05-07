@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameOverUI : BaseUI
 {
-    [SerializeField] private Button restartButton;
-    [SerializeField] private Button closeButton;
+    [SerializeField] private TextMeshProUGUI currentScoreTxt;
+    [SerializeField] private Button restartBtn;
+    [SerializeField] private Button closeBtn;
 
     public override UIState GetUIState => UIState.GameOver;
 
@@ -15,9 +17,15 @@ public class GameOverUI : BaseUI
     {
         base.Init(uiManager);
 
-        restartButton.onClick.AddListener(OnRestartButtonClick);
-        closeButton.onClick.AddListener(OnExitButtonClick);
+        restartBtn.onClick.AddListener(OnRestartButtonClick);
+        closeBtn.onClick.AddListener(OnCloseButtonClick);
     }
+
+    public void ShowCurrentScore(int score)
+    {
+        currentScoreTxt.text = score.ToString();
+    }
+
     public void OnRestartButtonClick()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
@@ -46,25 +54,9 @@ public class GameOverUI : BaseUI
         }
     }
 
-    public void OnExitButtonClick()
+    public void OnCloseButtonClick()
     {
-        string currentSceneName = SceneManager.GetActiveScene().name;
-        if (currentSceneName == "MainScene")
-        {
-            this.gameObject.SetActive(false);
-            if (uiManager != null)
-            {
-                uiManager.SetPlayGame();
-            }
-            return;
-        }
-
-        // 메인씬이 아닐때, 게임 시작
-        if (currentSceneName != "MainScene")
-        {
-            BlueGameManager.Instance.CoinSavePlayer();
-            SceneManager.LoadScene("MainScene");
-        }
+         SceneManager.LoadScene("MainScene");
     }
 
 }

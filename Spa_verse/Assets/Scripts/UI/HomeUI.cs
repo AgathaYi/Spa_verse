@@ -15,13 +15,23 @@ public class HomeUI : BaseUI
     public override void Init(UIManager uiManager)
     {
         base.Init(uiManager);
+
+        Time.timeScale = 0f; // 게임 정지
+
         startBtn.onClick.AddListener(OnClickStartBtn);
         exitBtn.onClick.AddListener(OnClickExitBtn);
     }
 
     public void OnClickStartBtn()
     {
+        Time.timeScale = 1f; // 게임 시작
         uiManager.SetPlayGame(); // HomeUI 사라짐
+
+        // 메인씬 게임매니져
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.GameStart(); // 게임 시작
+        }
     }
 
     public void OnClickExitBtn()

@@ -8,13 +8,12 @@ public abstract class BaseUI : MonoBehaviour
     // start, game, gameover UI 공통 초기화 및 활성화 비활성화
 
     protected UIManager uiManager;
-
-    public virtual void Init(UIManager uiManager)
-    {
-        this.uiManager = uiManager;
-    }
-
     public abstract UIState GetUIState { get; }
+
+    public virtual void Init(UIManager uiMng)
+    {
+        uiManager = uiMng;
+    }
 
     public void SetActive(UIState state)
     {

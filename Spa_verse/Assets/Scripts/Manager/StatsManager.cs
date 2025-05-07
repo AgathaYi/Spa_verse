@@ -10,9 +10,6 @@ public class StatsManager : MonoBehaviour
     public int totalScore { get; private set; } // 총 점수
     public int totalCoin { get; private set; } // 총 코인
 
-    [Header("Stats")]
-    [SerializeField] private TextMeshProUGUI scoreText; // 점수
-    [SerializeField] private TextMeshProUGUI coinText; // 코인
     //[SerializeField] private TextMeshProUGUI int level;
 
     private void Awake()
@@ -30,38 +27,39 @@ public class StatsManager : MonoBehaviour
 
     private void Start()
     {
-        UpdateScoreUI(totalScore);
-        UpdateCoinUI(totalCoin);
+        UIManager.Instance.UpdateScoreUI(totalScore);
+        UIManager.Instance.UpdateCoinUI(totalCoin);
     }
 
 
     public void AddScore(int amount)
     {
         totalScore += amount;
-        UpdateScoreUI(totalScore);
+        UIManager.Instance.UpdateScoreUI(totalScore);
     }
 
     public void AddCoin(int amount)
     {
         totalCoin += amount;
-        UpdateCoinUI(totalCoin);
+        UIManager.Instance.UpdateCoinUI(totalCoin);
     }
 
-    public void UpdateScoreUI(int score)
-    {
-        if (scoreText != null)
-        {
-            scoreText.text = score.ToString();
-        }
-    }
+    //public void UpdateScoreUI(int score)
+    //{
+    //    if (scoreText != null)
+    //    {
+    //        scoreText.text = score.ToString();
+    //    }
+    //}
 
-    public void UpdateCoinUI(int coin)
-    {
-        if (coinText != null)
-        {
-            coinText.text = coin.ToString();
-        }
-    }
+    //public void UpdateCoinUI(int coin)
+    //{
+    //    if (coinText != null)
+    //    {
+    //        coinText.text = coin.ToString();
+    //    }
+    //} =UI매니져로
+
 
     //public void LevelUp()
     //{
