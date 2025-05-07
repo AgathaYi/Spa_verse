@@ -9,6 +9,7 @@ public class BlueGameManager : MonoBehaviour
     public GameObject startUI; // 시작 UI
 
     public bool isGameStart = false; // 블루존 게임 시작 여부
+    public bool isRestart = false; // 재시작 여부
     private int currentScore;
     public int currentCoin { get; private set; } // 현재 코인 수
 
@@ -20,7 +21,6 @@ public class BlueGameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject); // 씬이 바뀌어도 파괴되지 않음!!
-            SceneManager.sceneLoaded += ReLoadScene; // 씬이 로드될 때마다 호출
         }
         else
         {
@@ -56,15 +56,18 @@ public class BlueGameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        isRestart = true;
+        SceneManager.sceneLoaded += ReLoadScene; // 씬 재로드할떄, 해당 메서드 호출
         SceneChange.Load(SceneManager.GetActiveScene().name, ReLoadScene);
         //startUI.SetActive(false);
     }
 
+    // 점수 초기화, 시간세팅, GameUI 띄우기
     void ReLoadScene(Scene scene, LoadSceneMode mode)
     {
-        if (UIManager.Instance == null)
+        if (!isGameStart) //게임이 시작안하면, 리턴
         {
-            Debug.Log("UIManager is null");
+            return;
         }
 
         StartUI startUI = GetComponentInChildren<StartUI>(true);
