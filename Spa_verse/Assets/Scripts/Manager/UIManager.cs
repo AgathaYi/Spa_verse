@@ -32,68 +32,69 @@ public class UIManager : MonoBehaviour
 
     void Awake()
     {
-        string currentSceneName = SceneManager.GetActiveScene().name;
-        if (currentSceneName == "MainScene")
-        {
-            PlayerPrefs.DeleteKey("notFirstHomeUI");
-        }
 
-        //싱글톤 초기화
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject); // 이미 존재하는 경우 중복 방지
-            return;
-        }
+        //if (currentSceneName == "MainScene")
+        //{
+        //    PlayerPrefs.DeleteKey("notFirstHomeUI");
+        //}
+
+        ////싱글톤 초기화
+        //if (Instance == null)
+        //{
+        //    Instance = this;
+        //}
+        //else
+        //{
+        //    Destroy(gameObject); // 이미 존재하는 경우 중복 방지
+        //    return;
+        //}
 
         // in BaseUI 초기화
-        startUI = GetComponentInChildren<StartUI>(true); //UI매니져 자식 아래로만 찾기
-        gameUI = GetComponentInChildren<GameUI>(true);
-        gameOverUI = GetComponentInChildren<GameOverUI>(true);
+        if (startUI == null)
+            startUI = GetComponentInChildren<StartUI>(true); //UI매니져 자식 아래로만 찾기
+        if (startUI == null)
+            gameUI = GetComponentInChildren<GameUI>(true);
+        if (startUI == null)
+            gameOverUI = GetComponentInChildren<GameOverUI>(true);
+
 
         if (startUI != null)
-        {
             startUI.Init(this);
-        }
-
         if (gameUI != null)
-        {
             gameUI.Init(this);
-        }
-
         if (gameOverUI != null)
-        {
             gameOverUI.Init(this);
-        }
+
+
+        string currentSceneName = SceneManager.GetActiveScene().name;
 
         // HomeUI 초기화!!! 
-        if (homeUI != null)
+        if (currentSceneName == "MainScene")
         {
-            var varHomeUI = homeUI.GetComponent<HomeUI>();
-            if (varHomeUI != null)
+            if (homeUI != null)
             {
-                varHomeUI.Init(this);
+                var varHomeUI = homeUI.GetComponent<HomeUI>();
+                if (varHomeUI != null)
+                {
+                    varHomeUI.Init(this);
+                }
+                else
+                {
+                    Debug.LogError("HomeUI 에러-UIManager Awake");
+                }
             }
-            else
-            {
-                Debug.LogError("HomeUI 에러-UIManager Awake");
-            }
+
+            ChangeState(UIState.Home);
         }
         else
         {
-            Debug.LogError("오브젝트 인스펙터창 확인");
+            ChangeState(UIState.Start);
         }
 
-        // HomeUI 첫화면시
-        bool firstHomeUI = PlayerPrefs.GetInt("notFirstHomeUI", 0) == 0;
-        ChangeState(firstHomeUI ? UIState.Home : UIState.Start); // 처음 HomeUI일때만 HomeUI 활성화
-        if (firstHomeUI)
+        if (StatsManager.Instance != null)
         {
-            PlayerPrefs.SetInt("notFirstHomeUI", 1); // HomeUI가 처음이 아님
-            PlayerPrefs.Save(); // 플레이어 저장.
+            UpdateScoreUI(StatsManager.Instance.totalScore);
+            UpdateCoinUI(StatsManager.Instance.totalCoin);
         }
     }
 

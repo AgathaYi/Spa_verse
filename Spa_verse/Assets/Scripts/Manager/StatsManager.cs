@@ -27,8 +27,11 @@ public class StatsManager : MonoBehaviour
 
     private void Start()
     {
-        UIManager.Instance.UpdateScoreUI(totalScore);
-        UIManager.Instance.UpdateCoinUI(totalCoin);
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateScoreUI(totalScore);
+            UIManager.Instance.UpdateCoinUI(totalCoin);
+        }
     }
 
 
