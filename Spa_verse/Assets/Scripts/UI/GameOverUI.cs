@@ -9,6 +9,8 @@ public class GameOverUI : BaseUI
     [SerializeField] private Button restartButton;
     [SerializeField] private Button closeButton;
 
+    public override UIState GetUIState => UIState.GameOver;
+
     public override void Init(UIManager uiManager)
     {
         base.Init(uiManager);
@@ -30,22 +32,18 @@ public class GameOverUI : BaseUI
         }
 
         // 메인씬이 아닐때, 게임 시작
-        if (currentSceneName == "BlueZone")
+        if (currentSceneName != "MainScene")
         {
             if (uiManager != null)
             {
                 uiManager.SetPlayGame();
-                BlueGameManager.Instance.GameStart();
+                BlueGameManager.Instance.RestartGame();
             }
             else
             {
                 Debug.LogError("UIManager .null");
             }
         }
-        //else if (currentSceneName == "RedZone")
-        //{
-        //    RedGameManager.Instance.GameStart();
-        //}
     }
 
     public void OnExitButtonClick()
@@ -53,23 +51,20 @@ public class GameOverUI : BaseUI
         string currentSceneName = SceneManager.GetActiveScene().name;
         if (currentSceneName == "MainScene")
         {
+            this.gameObject.SetActive(false);
+            if (uiManager != null)
+            {
+                uiManager.SetPlayGame();
+            }
             return;
         }
 
-        ZoneBtn zoneBtn = GameManager.Instance.ZoneBtn;
-        if (zoneBtn != null)
+        // 메인씬이 아닐때, 게임 시작
+        if (currentSceneName != "MainScene")
         {
-            zoneBtn.OnClickCancleBtn();
-        }
-        else
-        {
+            BlueGameManager.Instance.CoinSavePlayer();
             SceneManager.LoadScene("MainScene");
         }
-
     }
 
-    protected override UIState GetUIState()
-    {
-        return UIState.GameOver;
-    }
 }

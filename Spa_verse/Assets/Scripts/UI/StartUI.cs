@@ -7,25 +7,18 @@ using UnityEngine.SceneManagement;
 public class StartUI : BaseUI
 {
     [SerializeField] private Button startButton;
-    [SerializeField] private Button closeButton;
-    [SerializeField] private Button exitBtn;
+    [SerializeField] private Button closeButton; // 메인씬으로
+    [SerializeField] private Button exitBtn; // 게임종료: 메인씬만 활성화
+
+    public override UIState GetUIState => UIState.Start;
 
     public override void Init(UIManager uiManager)
     {
         base.Init(uiManager);
 
         startButton.onClick.AddListener(OnStartButtonClick);
-
-        if (closeButton != null)
-        {
-            closeButton.onClick.AddListener(OnCloseButtonClick);
-
-        }
-
-        if (exitBtn != null)
-        {
-            exitBtn.onClick.AddListener(OnExitBtnClick);
-        }
+        closeButton.onClick.AddListener(OnCloseButtonClick);
+        exitBtn.onClick.AddListener(OnExitBtnClick);
     }
 
     public void OnStartButtonClick()
@@ -33,26 +26,12 @@ public class StartUI : BaseUI
         string currentSceneName = SceneManager.GetActiveScene().name;
         if (currentSceneName == "MainScene")
         {
-            this.gameObject.SetActive(false);
-            if (uiManager != null)
-            {
-                uiManager.SetPlayGame();
-            }
-            return;
+            uiManager.ChangeState(UIState.Game);
         }
-
-        // 메인씬이 아닐때, 게임 시작
-        if (currentSceneName == "BlueZone")
+        else if (currentSceneName == "BlueZone")
         {
-            if (uiManager != null)
-            {
-                uiManager.SetPlayGame();
-                BlueGameManager.Instance.GameStart();
-            }
-            else
-            {
-                Debug.LogError("UIManager .null");
-            }
+            uiManager.SetPlayGame();
+            BlueGameManager.Instance.GameStart();
         }
         //else if (currentSceneName == "RedZone")
         //{
@@ -68,28 +47,13 @@ public class StartUI : BaseUI
         //}
     }
 
-    public void OnCloseButtonClick()
+    private void OnCloseButtonClick()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
-        if (currentSceneName == "MainScene")
+        if (currentSceneName != "MainScene")
         {
-            return;
+            SceneChange.otherScene("MainScene");
         }
-
-        ZoneBtn zoneBtn = GameManager.Instance.ZoneBtn;
-        if (zoneBtn != null)
-        {
-            zoneBtn.OnClickCancleBtn();
-        }
-        else
-        {
-            SceneManager.LoadScene("MainScene");
-        }
-    }
-
-    protected override UIState GetUIState()
-    {
-        return UIState.Start;
     }
 
     //버튼 클릭시, 게임 종료 및 유니티 에디터만 종료

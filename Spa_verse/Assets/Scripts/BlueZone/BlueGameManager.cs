@@ -6,16 +6,16 @@ using UnityEngine.SceneManagement;
 public class BlueGameManager : MonoBehaviour
 {
     public static BlueGameManager Instance { get; private set; } // 싱글톤 인스턴스
-    public int currentScore { get; private set; } // 현재 점수
-    public int currentCoin { get; private set; } // 현재 코인
+    public GameObject startUI;
+
+    public bool isGameStart { get; private set; } // 게임 시작 여부
+
+    private int currentScore;
+    private int currentCoin;
 
 
-    [SerializeField] private GameObject startUI;
-    public bool isGameStart = false;
 
-
-
-    private void Awake()
+    void Awake()
     {
         if (Instance == null)
         {
@@ -27,20 +27,21 @@ public class BlueGameManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    void Start()
     {
         Time.timeScale = 0f;
         isGameStart = false;
         startUI.SetActive(true);
         currentScore = 0;
         currentCoin = 0;
+        startUI.SetActive(true);
     }
 
     public void GameStart()
     {
+        startUI.SetActive(false);
         Time.timeScale = 1f;
         isGameStart = true;
-        startUI.SetActive(false);
     }
 
     public void AddScore (int score)
@@ -55,18 +56,22 @@ public class BlueGameManager : MonoBehaviour
 
     public void CoinSavePlayer()
     {
-        GameManager.Instance.StatsManager.AddCoin(currentCoin);
-        SceneManager.LoadScene("MainScene");
+        StatsManager.Instance.AddCoin(currentCoin);
+        SceneChange.otherScene("MainScene");
     }
 
     public void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneChange.otherScene(SceneManager.GetActiveScene().name);
+        GameStart();
     }
     public void GameOver()
     {
-        Debug.Log("게임 오버");
-        // 게임 over ui 별도관리
+        Time.timeScale = 0f;
+        UIManager.Instance.ChangeState(UIState.GameOver);
+        UIManager.Instance.SetGameOver(currentScore);
+        StatsManager.Instance.UpdateScoreUI(currentScore);
+
     }
 
 }

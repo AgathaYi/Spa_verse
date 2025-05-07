@@ -7,19 +7,20 @@ using UnityEngine.UI;
 
 public class GameUI : BaseUI
 {
-    [SerializeField] private TextMeshProUGUI distanceTxt;
+    [SerializeField] private TextMeshProUGUI scoreTxt;
     [SerializeField] private TextMeshProUGUI coinTxt;
     //[SerializeField] private Slider hpSlider;
+
+    public override UIState GetUIState => UIState.Game;
 
     public override void Init(UIManager uiManager)
     {
         base.Init(uiManager);
 
-        if (distanceTxt != null)
+        if (scoreTxt != null)
         {
-            //hpSlider.value = 1;
-            distanceTxt.text = "0";
-            coinTxt.text = "0";
+            UpScoreText(0);
+            UpCoinText(0);
         }
     }
 
@@ -35,22 +36,11 @@ public class GameUI : BaseUI
 
     public void UpScoreText(int score)
     {
-        string currentSceneName = SceneManager.GetActiveScene().name;
-        if (currentSceneName == "MainScene")
-        {
-            return;
-        }
-
-        distanceTxt.text = score.ToString();
+        scoreTxt.text = score.ToString();
     }
 
     public void UpCoinText(int coin)
     {
         coinTxt.text = coin.ToString();
-    }
-
-    protected override UIState GetUIState()
-    {
-        return UIState.Game;
     }
 }

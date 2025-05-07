@@ -7,10 +7,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public StatsManager StatsManager { get; private set; } // 점수, 코인 등
-    public ZoneBtn ZoneBtn { get; private set; } // 씬 전환버튼
+    public HomeUI HomeUI { get; private set; } // 씬 전환버튼
     public UIManager UIManager { get; private set; }
 
     private string targetSceneName;
+    private bool notFirstHomeUI = false;
 
     private void Awake()
     {
@@ -20,7 +21,7 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(gameObject); // 씬이 바뀌어도 파괴되지 않음!!
 
             StatsManager = gameObject.AddComponent<StatsManager>();
-            ZoneBtn = FindAnyObjectByType<ZoneBtn>(); // 씬 전환 버튼 컴포넌트 가져오기
+            HomeUI = FindAnyObjectByType<HomeUI>(); // 씬 전환 버튼 컴포넌트 가져오기
         }
         else
         {
@@ -41,7 +42,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("UI매니져 못찾았음");
         }
-        
+
     }
 
     void Update()
@@ -64,15 +65,10 @@ public class GameManager : MonoBehaviour
     {
         UIManager = FindObjectOfType<UIManager>(true);
 
-        //UI매니져/zoneBtn/ null이어도 플레이어 연결 되어야함.
+        //UI매니져/HomeUI/ null이어도 플레이어 연결 되어야함.
         if (UIManager == null)
         {
             Debug.Log("UI매니져 못찾았음");
-            return;
-        }
-        if (ZoneBtn == null)
-        {
-            Debug.Log("ZoneBtn 못찾았음");
             return;
         }
 
@@ -95,33 +91,42 @@ public class GameManager : MonoBehaviour
             }
         }
 
-            switch (sceneName)
-            {
-                case "MainScene":
-                    break;
+        switch (sceneName)
+        {
+            case "MainScene":
+                if (!notFirstHomeUI)
+                {
+                    // 게임 시작시에만 보여줄 UI
+                    UIManager.ChangeState(UIState.Home);
+                    notFirstHomeUI = true;
+                }
+                else
+                {
+                    // 플레이중 보여줄 UI
+                    UIManager.ChangeState(UIState.Game);
+                }
+                break;
 
-                case "BlueZone":
-                    // 블루존 Init 코드
-                    break;
+            case "BlueZone":
+                break;
 
-                case "RedZone":
-                    // 레드존 Init 코드
-                    break;
+            case "RedZone":
+                break;
 
-                //case "GreenZoneBtn":
-                //    break;
+            //case "GreenZone":
+            //    break;
 
-                //case "YellowZoneBtn":
-                //    break;
+            //case "YellowZone":
+            //    break;
 
-                default:
-                    Debug.LogError("Zone 이름 확인 필요 : " + sceneName);
-                    break;
-            }
+            default:
+                Debug.LogError("Zone 이름 확인 필요 : " + sceneName);
+                break;
+        }
     }
 
 
-    // ZoneBtn null 일떄 씬 전환사용을 위함.. 
+    // HomeUI null 일떄 씬 전환사용을 위함.. 
     public void OnSceneLoad(Scene scene, LoadSceneMode mode)
     {
         ResetScene(scene.name);
@@ -133,4 +138,5 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoad;
         SceneManager.LoadScene(targetSceneName);
     }
+
 }
