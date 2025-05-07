@@ -23,14 +23,12 @@ public class StartUI : BaseUI
     public void OnStartButtonClick()
     {
         uiManager.SetPlayGame();
+        gameObject.SetActive(false);
+        Time.timeScale = 1f;
 
         string currentSceneName = SceneManager.GetActiveScene().name;
-        if (currentSceneName != "MainScene")
+        if (currentSceneName == "MainScene")
         {
-            gameObject.SetActive(false);
-
-            Time.timeScale = 1f; // 게임 시작
-            uiManager.SetPlayGame(); // HomeUI X
             GameManager.Instance.GameStart();
         }
         else if (currentSceneName == "BlueZone")

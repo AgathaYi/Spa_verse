@@ -23,7 +23,8 @@ public class GameOverUI : BaseUI
 
     public void ShowCurrentScore(int score)
     {
-        currentScoreTxt.text = score.ToString();
+        if (currentScoreTxt != null)
+            currentScoreTxt.text = score.ToString();
     }
 
     public void OnRestartButtonClick()

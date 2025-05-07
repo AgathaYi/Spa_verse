@@ -20,6 +20,7 @@ public class BlueGameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject); // 씬이 바뀌어도 파괴되지 않음!!
+            SceneManager.sceneLoaded += ReLoadScene; // 씬이 로드될 때마다 호출
         }
         else
         {
@@ -49,7 +50,6 @@ public class BlueGameManager : MonoBehaviour
             startUI.SetActive(false);
         }
 
-
         Time.timeScale = 1f;
         isGameStart = true;
     }
@@ -57,16 +57,28 @@ public class BlueGameManager : MonoBehaviour
     public void RestartGame()
     {
         SceneChange.Load(SceneManager.GetActiveScene().name, ReLoadScene);
+        //startUI.SetActive(false);
     }
 
-    private void ReLoadScene(Scene scene, LoadSceneMode mode)
+    void ReLoadScene(Scene scene, LoadSceneMode mode)
     {
+        if (UIManager.Instance == null)
+        {
+            Debug.Log("UIManager is null");
+        }
+
+        StartUI startUI = GetComponentInChildren<StartUI>(true);
+        GameUI gameUI = GetComponentInChildren<GameUI>(true);
+        GameOverUI gameOverUI = GetComponentInChildren<GameOverUI>(true);
+
         currentScore = 0;
         UIManager.Instance.UpdateScoreUI(currentScore);
         UIManager.Instance.UpdateCoinUI(currentCoin);
 
         Time.timeScale = 1f;
         isGameStart = true;
+
+        UIManager.Instance.SetPlayGame();
     }
 
 
@@ -88,12 +100,16 @@ public class BlueGameManager : MonoBehaviour
     {
         Time.timeScale = 0f;
 
-        //게임 끝나면 (over, clear 무관) 코인 저장
+        // UIManager
+        if (UIManager.Instance != null)
+            UIManager.Instance.SetGameOver(currentScore);
 
-        UIManager.Instance.SetGameOver(currentScore);
-        StatsManager.Instance.AddCoin(currentCoin);
-        GameOverUI gameOverUI = FindObjectOfType<GameOverUI>();
-        gameOverUI.ShowCurrentScore(currentScore);
+        //코인 저장
+        if (StatsManager.Instance != null)
+            StatsManager.Instance.AddCoin(currentCoin);
 
+        var gameOverUI = FindObjectOfType<GameOverUI>();
+        if (gameOverUI != null)
+            gameOverUI.ShowCurrentScore(currentScore);
     }
 }

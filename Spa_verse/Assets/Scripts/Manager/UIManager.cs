@@ -26,35 +26,27 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameUI gameUI;
     [SerializeField] private GameOverUI gameOverUI;
 
-    [Header("Stats")]
-    [SerializeField] private TextMeshProUGUI scoreText; // 점수
-    [SerializeField] private TextMeshProUGUI coinText; // 코인
+    [Header("MiniGameZone Stats")]
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI coinText;
 
     void Awake()
     {
+        Instance = this;
 
-        //if (currentSceneName == "MainScene")
-        //{
-        //    PlayerPrefs.DeleteKey("notFirstHomeUI");
-        //}
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        if (currentSceneName == "MainScene")
+        {
+            PlayerPrefs.DeleteKey("notFirstHomeUI");
+        }
 
-        ////싱글톤 초기화
-        //if (Instance == null)
-        //{
-        //    Instance = this;
-        //}
-        //else
-        //{
-        //    Destroy(gameObject); // 이미 존재하는 경우 중복 방지
-        //    return;
-        //}
 
         // in BaseUI 초기화
         if (startUI == null)
             startUI = GetComponentInChildren<StartUI>(true); //UI매니져 자식 아래로만 찾기
-        if (startUI == null)
+        if (gameUI == null)
             gameUI = GetComponentInChildren<GameUI>(true);
-        if (startUI == null)
+        if (gameOverUI == null)
             gameOverUI = GetComponentInChildren<GameOverUI>(true);
 
 
@@ -65,8 +57,6 @@ public class UIManager : MonoBehaviour
         if (gameOverUI != null)
             gameOverUI.Init(this);
 
-
-        string currentSceneName = SceneManager.GetActiveScene().name;
 
         // HomeUI 초기화!!! 
         if (currentSceneName == "MainScene")
@@ -118,6 +108,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void SetPlayGame()
+    {
+        ChangeState(UIState.Game);
+    }
+
     // MiniGameZone
     public void UpdateScoreUI(int score)
     {
@@ -135,19 +130,13 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void SetPlayGame()
-    {
-        ChangeState(UIState.Game);
-    }
-
     public void SetGameOver(int score) //현재점수
     {
         ChangeState(UIState.GameOver);
         // 점수 표시
-        GameUI gameUI = FindObjectOfType<GameUI>();
-        if (gameUI != null)
+        if (gameOverUI != null)
         {
-            gameUI.UpScoreText(score);
+            gameOverUI.ShowCurrentScore(score);
         }
         else
         {

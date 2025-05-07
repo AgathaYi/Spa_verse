@@ -34,11 +34,6 @@ public class BluePlayer : MonoBehaviour
 
     void Update()
     {
-        if (!isDead && !blueGameManager.isGameStart)
-        {
-            return;
-        }
-
         if (isDead)
         {
             if (deathCooldown <= 0)
