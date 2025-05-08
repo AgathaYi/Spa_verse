@@ -11,14 +11,13 @@ public class SceneChange : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
-    // 수정 필요
     public static void Load(string sceneName, UnityAction<Scene, LoadSceneMode> onLoaded)
     {
         UnityAction<Scene, LoadSceneMode> handler = null;
-        handler = (score, coin) =>
+        handler = (scene, mode) =>
         {
             SceneManager.sceneLoaded -= handler;
-            onLoaded?.Invoke(score, coin);
+            onLoaded?.Invoke(scene, mode);
         };
         SceneManager.sceneLoaded += handler;
         SceneManager.LoadScene(sceneName);

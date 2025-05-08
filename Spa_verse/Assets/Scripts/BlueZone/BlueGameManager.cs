@@ -59,7 +59,6 @@ public class BlueGameManager : MonoBehaviour
         isRestart = true;
         SceneManager.sceneLoaded += ReLoadScene; // 씬 재로드할떄, 해당 메서드 호출
         SceneChange.Load(SceneManager.GetActiveScene().name, ReLoadScene);
-        //startUI.SetActive(false);
     }
 
     // 점수 초기화, 시간세팅, GameUI 띄우기
